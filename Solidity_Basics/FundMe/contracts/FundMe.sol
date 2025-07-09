@@ -5,19 +5,28 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
-import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
+import {PriceConverter} from "contracts/PriceConverter.sol";
 
-contract FundMe{
+contract Fundme{
+    // connecting PriceConverter to uint256 datatype
+    using PriceConverter for uint256; 
 
-    uint256 public minimumISD = 1e18/80;
+    uint256 public constant MINIMUM_ISD = 1e18/80;
     address[] public funders;
     mapping (address funder => uint256 amountFunded) addressToamountfunded;
+    
+    address public immutable i_owner;
+    constructor(){
+        i_owner = msg.sender;
+    }
+    
     function fund() public payable{
         // alllow user to send
         // have a minimum inr sent
         
         //send eth to this account
-        require(getConversionRate(msg.value) >= minimumISD, "minimum requiremnet not reached"); //global variable 
+        uint256 LibraryFunction_Conversionrate = msg.value.getConversionRate(); // we linked uint256 to PriceConverter and msg.value is a uint256 type so it can access the PriceConverter contract
+        require(LibraryFunction_Conversionrate >= MINIMUM_ISD, "minimum requiremnet not reached"); //global variable 
         funders.push(msg.sender);
         addressToamountfunded[msg.sender] = addressToamountfunded[msg.sender] + msg.value; 
 
@@ -25,19 +34,27 @@ contract FundMe{
 
     }
 
-    // function withdraw() public{}
+    function withdraw() public onlyOwner{
 
-    function getPrice() public view returns (uint256){
-        //usd/eth address = 0x694AA1769357215DE4FAC081bf1f309aDC325306
-         AggregatorV3Interface priceFeed = AggregatorV3Interface(0x694AA1769357215DE4FAC081bf1f309aDC325306);
-         (, int256 price,,,) = priceFeed.latestRoundData();
-         uint256 usd_1 = uint256(price * 1e10);
-         return usd_1;
+        // for loop
+        for(uint256 funderIndex = 0; funderIndex< funders.length; funderIndex++){
+            address funder = funders[funderIndex];
+            addressToamountfunded[funder] = 0;
+        }
+
+        // reset the array
+        funders = new address[](0);
+
+        // withraw the fund 
+        // usinng call
+        (bool callSucesss,)  = payable(msg.sender).call{value: address(this).balance}("");
+        require(callSucesss, "Call Failed");
     }
 
-    function getConversionRate(uint256 _amountEth ) public view returns(uint256){
-        uint ethPrice = getPrice();
-        uint ethAmountinUsd = (ethPrice * _amountEth)/ 1e18;
-        return ethAmountinUsd;
+    modifier  onlyOwner(){
+        require(msg.sender == i_owner, "Must be owner");
+        _; // "_" is placeholder for everything else
     }
+
+   
 }

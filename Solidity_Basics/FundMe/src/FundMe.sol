@@ -5,7 +5,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
-import {PriceConverter} from "contracts/PriceConverter.sol";
+import {PriceConverter} from "./PriceConverter.sol";
 
 contract Fundme{
     // connecting PriceConverter to uint256 datatype

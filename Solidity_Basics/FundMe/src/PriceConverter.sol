@@ -3,7 +3,7 @@ pragma solidity ^0.8.18;
 
 // library for the fund me which contains the calculations
 
-import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
+import {AggregatorV3Interface} from "@chainlink/contract/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
 
 library PriceConverter{
      function getPrice() internal view returns (uint256){

@@ -6,6 +6,7 @@
 pragma solidity ^0.8.18;
 
 import {PriceConverter} from "./PriceConverter.sol";
+import {AggregatorV3Interface} from "@chainlink/contract/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
 
 contract Fundme{
     // connecting PriceConverter to uint256 datatype
@@ -14,10 +15,12 @@ contract Fundme{
     uint256 public constant MINIMUM_ISD = 1e18/80;
     address[] public funders;
     mapping (address funder => uint256 amountFunded) addressToamountfunded;
+    AggregatorV3Interface private s_priceFeed;
     
-    address public immutable i_owner;
-    constructor(){
+    address private immutable i_owner;
+    constructor(address _priceFeedAddress) {
         i_owner = msg.sender;
+        s_priceFeed = AggregatorV3Interface(_priceFeedAddress);
     }
     
     function fund() public payable{
@@ -25,7 +28,7 @@ contract Fundme{
         // have a minimum inr sent
         
         //send eth to this account
-        uint256 LibraryFunction_Conversionrate = msg.value.getConversionRate(); // we linked uint256 to PriceConverter and msg.value is a uint256 type so it can access the PriceConverter contract
+        uint256 LibraryFunction_Conversionrate = msg.value.getConversionRate(s_priceFeed); // we linked uint256 to PriceConverter and msg.value is a uint256 type so it can access the PriceConverter contract
         require(LibraryFunction_Conversionrate >= MINIMUM_ISD, "minimum requiremnet not reached"); //global variable 
         funders.push(msg.sender);
         addressToamountfunded[msg.sender] = addressToamountfunded[msg.sender] + msg.value; 
@@ -54,6 +57,19 @@ contract Fundme{
     modifier  onlyOwner(){
         require(msg.sender == i_owner, "Must be owner");
         _; // "_" is placeholder for everything else
+    }
+
+    // getters
+    function getAddressToAmountFunded(address funder) external view returns(uint256){
+        return addressToamountfunded[funder];
+    }
+
+    function getFunder(uint256 index) external view returns(address){
+        return funders[index];
+    }
+
+    function getOwner() external view returns(address){
+        return i_owner;
     }
 
    

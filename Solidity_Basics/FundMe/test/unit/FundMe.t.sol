@@ -1,9 +1,9 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
-import {Fundme} from "../src/FundMe.sol";
-import {Test, console} from "../lib/forge-std/src/Test.sol";
-import {DeployFundMe} from "../script/DeployFundMe.s.sol";
+import {Fundme} from "../../src/FundMe.sol";
+import {Test, console} from "../../lib/forge-std/src/Test.sol";
+import {DeployFundMe} from "../../script/DeployFundMe.s.sol";
 
 
 contract FundMetest is Test{
@@ -12,6 +12,7 @@ contract FundMetest is Test{
     address public  USER  = makeAddr("User");
     uint256 constant STARTING_VALUE = 10e18;
     uint256 constant SEND_VALUE = 0.1 ether;
+    uint256 constant GAS_PRICE = 1e9; // 1 gwei
 
     function setUp() external {
         DeployFundMe deployfundme = new DeployFundMe();
@@ -96,7 +97,7 @@ contract FundMetest is Test{
 
         assertEq(endingFundMeBalance, 0);
         assertEq(startingFundMebalance + startingOwnerBalance, endingOwnerbalance);
-        
+
     }
     modifier funded(){
         vm.prank(USER);

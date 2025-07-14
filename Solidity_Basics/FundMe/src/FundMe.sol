@@ -37,6 +37,13 @@ contract Fundme{
 
     }
 
+    function cheaperWithdraw() public onlyOwner{
+        uint256 fundersCount = funders.length;
+        for(uint256 funderIndex = 0; funderIndex < fundersCount; funderIndex++){
+             address funder = funders[funderIndex];
+            addressToamountfunded[funder] = 0;
+        }
+    }
     function withdraw() public onlyOwner{
 
         // for loop

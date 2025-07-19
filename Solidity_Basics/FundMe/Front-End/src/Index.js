@@ -1,6 +1,5 @@
 import { ethers } from "./ethers-6.7.esm.min.js"
 import { abi, contractAddress } from "./constants.js"
-import {Toastify} from "./toastify.js"
 
 const connectButton = document.getElementById("connectButton")
 const withdrawButton = document.getElementById("withdrawButton")
@@ -15,6 +14,15 @@ async function connect() {
   if (typeof window.ethereum !== "undefined") {
     try {
       await ethereum.request({ method: "eth_requestAccounts" })
+      Toastify({
+        text: "Connected to MetaMask",
+        duration: 3000,
+        gravity: "top",
+        position: "right",
+        style: {
+          background: "#4CAF50",
+        },
+      }).showToast();
     } catch (error) {
       console.log(error)
     }
@@ -78,8 +86,10 @@ async function getBalance() {
         duration: 3000,
         gravity: "top",
         position: "right",
-        backgroundColor: "#4CAF50",
-      })
+        style: {
+          background: "#4CAF50",
+        },
+      }).showToast();
     } catch (error) {
       console.log(error)
     }

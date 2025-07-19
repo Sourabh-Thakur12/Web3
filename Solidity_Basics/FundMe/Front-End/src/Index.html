@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Fund Me App</title>
+    <link href="./output.css" rel="stylesheet">
+  </head>
+
+  <body class="flex justify-center items-center h-screen flex-col  bg-gray-700 text-white flex-wrap">
+    <div class= "border-2 m-2 p-5 min-h-[300px] min-w-[600px] rounded-xl ">
+      <div class="mb-10 ">
+        <h1 class="text-5xl font-bold flex justify-center ">Fund Me App</h1>
+      </div>
+      <div class="mt-5 mb-5">
+        <label class="text-2xl" for="ethAmount">ETH Amount</label>
+        <input class="border rounded-2xl w-[600px]" id="ethAmount" placeholder="0.1" />
+      </div>
+      <div class="flex justify-evenly gap-8  text-black flex-wrap"> 
+        <button class="btn" id="conectButton">Connect</button>
+        <button class="btn" id="balanceButton">getBalance</button>
+        <button class="btn" id="withdrawButton">Withdraw</button>
+        <!-- <form> -->
+        <button class="btn" type="button" id="fundButton" > Fund </button>
+      </div>
+    <!-- </form> -->
+    </div>
+     </body>
+
+  <script src="./index.js" type="module"></script>
+</html>

@@ -6,3 +6,4 @@
 	url = https://github.com/smartcontractkit/chainlink-brownie-contracts
 [submodule "Solidity_Basics/FundMe/lib/foundry-devops"]
 	path = Solidity_Basics/FundMe/lib/foundry-devops
+	url = https://github.com/Cyfrin/foundry-devops

@@ -1,5 +1,6 @@
 import { ethers } from "./ethers-6.7.esm.min.js"
 import { abi, contractAddress } from "./constants.js"
+import {Toastify} from "./toastify.js"
 
 const connectButton = document.getElementById("connectButton")
 const withdrawButton = document.getElementById("withdrawButton")
@@ -72,6 +73,13 @@ async function getBalance() {
     try {
       const balance = await provider.getBalance(contractAddress)
       console.log(ethers.formatEther(balance))
+      Toastify({
+        text: `Contract Balance: ${ethers.formatEther(balance)} ETH`,
+        duration: 3000,
+        gravity: "top",
+        position: "right",
+        backgroundColor: "#4CAF50",
+      })
     } catch (error) {
       console.log(error)
     }

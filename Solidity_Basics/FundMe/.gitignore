@@ -2,6 +2,9 @@
 cache/
 out/
 
+#VsCode settings
+.vscode/
+
 # Ignores development broadcast logs
 !/broadcast
 /broadcast/*/31337/
@@ -14,6 +17,7 @@ docs/
 .env
 
 # Node modules
+node_modules/
 Front-End/node_modules/
 
 #Build Directories
